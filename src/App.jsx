@@ -12,8 +12,8 @@ const REPO_URL = "https://raw.githubusercontent.com/rendrasc/solar-system-3D/mai
 const SOLAR_DATA = [
   { 
     id: 'sun', name: "Sun", type: "Star", radius: 35, distance: 0, speed: 0, color: '#FFD700', textureType: 'star', 
-    // Updated to Title Case: Sun.jpg
-    textureUrl: `${REPO_URL}/Sun.jpg`,
+
+    textureUrl: `${REPO_URL}/sun.jpg`,
     stats: { temp: '5,500°C', orbit: 'N/A', gravity: '274 m/s²', day: '25 Days' }, 
     comp: ['Hydrogen', 'Helium'], 
     desc: "The star at the center of our Solar System.", 
@@ -22,8 +22,8 @@ const SOLAR_DATA = [
   },
   { 
     id: 'mercury', name: "Mercury", type: "Planet", radius: 2.8, distance: 55, speed: 0.015, color: '#999999', textureType: 'mercury',
-    // Updated to Title Case
-    textureUrl: `${REPO_URL}/Mercury.jpg`,
+
+    textureUrl: `${REPO_URL}/mercury.jpg`,
     stats: { temp: '167°C', orbit: '88 Days', gravity: '3.7 m/s²', day: '59 Days' }, 
     comp: ['Iron', 'Sodium'], 
     desc: "The smallest planet in the Solar System.", 
@@ -32,8 +32,8 @@ const SOLAR_DATA = [
   },
   { 
     id: 'venus', name: "Venus", type: "Planet", radius: 6.5, distance: 80, speed: 0.012, color: '#E3BB76', textureType: 'venus', 
-    // Updated to Title Case
-    textureUrl: `${REPO_URL}/Venus.jpg`,
+
+    textureUrl: `${REPO_URL}/venus.jpg`,
     stats: { temp: '464°C', orbit: '225 Days', gravity: '8.87 m/s²', day: '243 Days' }, 
     comp: ['CO2', 'Nitrogen'], 
     desc: "Hottest planet due to greenhouse effect.", 
@@ -42,8 +42,8 @@ const SOLAR_DATA = [
   },
   { 
     id: 'earth', name: "Earth", type: "Planet", radius: 7, distance: 110, speed: 0.01, color: '#1C4E80', textureType: 'earth',
-    // Updated to Title Case
-    textureUrl: `${REPO_URL}/Earth.jpg`,
+
+    textureUrl: `${REPO_URL}/earth.jpg`,
     stats: { temp: '15°C', orbit: '365 Days', gravity: '9.8 m/s²', day: '24 Hours' }, 
     comp: ['Nitrogen', 'Oxygen'], 
     desc: "The only known world to harbor life.", 
@@ -51,14 +51,14 @@ const SOLAR_DATA = [
     facts: [ "Only place known to host life.", "Densest planet in the system.", "70% surface is water.", "Protected by magnetic field.", "Not a perfect sphere." ], 
     moons: [{ 
         name: "Moon", radius: 1.9, distance: 14, speed: 0.03, color: '#E0E0E0', type: 'rocky',
-        // Updated to Title Case
-        textureUrl: `${REPO_URL}/Moon.jpg`
+        
+        textureUrl: `${REPO_URL}/moon.jpg`
     }] 
   },
   { 
     id: 'mars', name: "Mars", type: "Planet", radius: 3.8, distance: 150, speed: 0.008, color: '#D14A28', textureType: 'mars', 
-    // Updated to Title Case
-    textureUrl: `${REPO_URL}/Mars.jpg`,
+
+    textureUrl: `${REPO_URL}/mars.jpg`,
     stats: { temp: '-65°C', orbit: '687 Days', gravity: '3.71 m/s²', day: '24.6 Hours' }, 
     comp: ['CO2', 'Argon'], 
     desc: "The Red Planet.", 
@@ -68,8 +68,8 @@ const SOLAR_DATA = [
   },
   { 
     id: 'jupiter', name: "Jupiter", type: "Gas Giant", radius: 22, distance: 220, speed: 0.004, color: '#C88B3A', textureType: 'jupiter', 
-    // Updated to Title Case
-    textureUrl: `${REPO_URL}/Jupiter.jpg`,
+
+    textureUrl: `${REPO_URL}/jupiter.jpg`,
     stats: { temp: '-110°C', orbit: '12 Years', gravity: '24.79 m/s²', day: '10 Hours' }, 
     comp: ['Hydrogen', 'Helium'], 
     desc: "The largest planet.", 
@@ -80,8 +80,8 @@ const SOLAR_DATA = [
   },
   { 
     id: 'saturn', name: "Saturn", type: "Gas Giant", radius: 18, distance: 300, speed: 0.003, color: '#E4D5B6', textureType: 'saturn',
-    // Updated to Title Case
-    textureUrl: `${REPO_URL}/Saturn.jpg`,
+
+    textureUrl: `${REPO_URL}/saturn.jpg`,
     rings: { inner: 24, outer: 42, color: 0xcfc3a3, opacity: 0.9 }, 
     stats: { temp: '-140°C', orbit: '29 Years', gravity: '10.44 m/s²', day: '10.7 Hours' }, 
     comp: ['Hydrogen', 'Helium'], 
@@ -92,8 +92,8 @@ const SOLAR_DATA = [
   },
   { 
     id: 'uranus', name: "Uranus", type: "Ice Giant", radius: 12, distance: 380, speed: 0.002, color: '#93B8BE', textureType: 'uranus', tilt: Math.PI / 2,
-    // Updated to Title Case
-    textureUrl: `${REPO_URL}/Uranus.jpg`,
+
+    textureUrl: `${REPO_URL}/uranus.jpg`,
     rings: { inner: 14, outer: 18, color: 0x88aabb, opacity: 0.2 },
     stats: { temp: '-195°C', orbit: '84 Years', gravity: '8.69 m/s²', day: '17 Hours' }, 
     comp: ['Hydrogen', 'Ices'], 
@@ -104,8 +104,8 @@ const SOLAR_DATA = [
   },
   { 
     id: 'neptune', name: "Neptune", type: "Ice Giant", radius: 11.5, distance: 450, speed: 0.001, color: '#5B80ED', textureType: 'neptune', 
-    // Updated to Title Case
-    textureUrl: `${REPO_URL}/Neptune.jpg`,
+ 
+    textureUrl: `${REPO_URL}/neptune.jpg`,
     stats: { temp: '-200°C', orbit: '165 Years', gravity: '11.15 m/s²', day: '16 Hours' }, 
     comp: ['Hydrogen', 'Ices'], 
     desc: "The windiest planet.", 
@@ -115,8 +115,8 @@ const SOLAR_DATA = [
   },
   { 
     id: 'pluto', name: "Pluto", type: "Dwarf Planet", radius: 1.8, distance: 585, speed: 0.0008, color: '#D1C2A5', textureType: 'rocky',
-    // Updated to Title Case
-    textureUrl: `${REPO_URL}/Pluto.jpg`,
+
+    textureUrl: `${REPO_URL}/pluto.jpg`,
     stats: { temp: '-229°C', orbit: '248 Years', gravity: '0.62 m/s²', day: '153 Hours' }, 
     comp: ['Nitrogen', 'Methane'], 
     desc: "The famous dwarf planet.", 
@@ -126,8 +126,8 @@ const SOLAR_DATA = [
   },
   { 
     id: 'haumea', name: "Haumea", type: "Dwarf Planet", radius: 2.0, distance: 645, speed: 0.0006, color: '#E0E0E0', textureType: 'rocky', 
-    // Updated to Title Case
-    textureUrl: `${REPO_URL}/Haumea.jpg`,
+ 
+    textureUrl: `${REPO_URL}/haumea.jpg`,
     scale: [1.9, 0.9, 0.5], 
     stats: { temp: '-241°C', orbit: '284 Years', gravity: '0.4 m/s²', day: '4 Hours' }, 
     comp: ['Rock', 'Ice'], 
@@ -137,8 +137,8 @@ const SOLAR_DATA = [
   },
   { 
     id: 'sedna', name: "Sedna", type: "Dwarf Planet", radius: 1.5, distance: 750, speed: 0.0004, color: '#CD5C5C', textureType: 'rocky', 
-    // Updated to Title Case: Sedna.jpg
-    textureUrl: `${REPO_URL}/Sedna.jpg`,
+
+    textureUrl: `${REPO_URL}/sedna.jpg`,
     stats: { temp: '-240°C', orbit: '11,400 Years', gravity: '0.4 m/s²', day: '10 Hours' }, 
     comp: ['Methane', 'Nitrogen'], 
     desc: "The distant wanderer.", 
