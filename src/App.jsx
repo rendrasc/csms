@@ -6,13 +6,13 @@ import { MessageSquare, Loader2, X, PlayCircle, Pause, Layers, ScanEye, ArrowRig
 /**
  * --- PLANETARY DATA ---
  */
-// Using 'textures updated' folder from the repository
+// Base URL for the new repository
 const REPO_URL = "https://raw.githubusercontent.com/rendrasc/solar-system-3D/main/textures%20updated";
 
 const SOLAR_DATA = [
   { 
     id: 'sun', name: "Sun", type: "Star", radius: 35, distance: 0, speed: 0, color: '#FFD700', textureType: 'star', 
-
+    // Updated to lowercase per your request
     textureUrl: `${REPO_URL}/sun.jpg`,
     stats: { temp: '5,500°C', orbit: 'N/A', gravity: '274 m/s²', day: '25 Days' }, 
     comp: ['Hydrogen', 'Helium'], 
@@ -22,7 +22,6 @@ const SOLAR_DATA = [
   },
   { 
     id: 'mercury', name: "Mercury", type: "Planet", radius: 2.8, distance: 55, speed: 0.015, color: '#999999', textureType: 'mercury',
-
     textureUrl: `${REPO_URL}/mercury.jpg`,
     stats: { temp: '167°C', orbit: '88 Days', gravity: '3.7 m/s²', day: '59 Days' }, 
     comp: ['Iron', 'Sodium'], 
@@ -32,7 +31,6 @@ const SOLAR_DATA = [
   },
   { 
     id: 'venus', name: "Venus", type: "Planet", radius: 6.5, distance: 80, speed: 0.012, color: '#E3BB76', textureType: 'venus', 
-
     textureUrl: `${REPO_URL}/venus.jpg`,
     stats: { temp: '464°C', orbit: '225 Days', gravity: '8.87 m/s²', day: '243 Days' }, 
     comp: ['CO2', 'Nitrogen'], 
@@ -42,7 +40,6 @@ const SOLAR_DATA = [
   },
   { 
     id: 'earth', name: "Earth", type: "Planet", radius: 7, distance: 110, speed: 0.01, color: '#1C4E80', textureType: 'earth',
-
     textureUrl: `${REPO_URL}/earth.jpg`,
     stats: { temp: '15°C', orbit: '365 Days', gravity: '9.8 m/s²', day: '24 Hours' }, 
     comp: ['Nitrogen', 'Oxygen'], 
@@ -126,15 +123,6 @@ const SOLAR_DATA = [
     desc: "The egg-shaped spinner.", 
     narration: "Haumea is a unique dwarf planet that spins so fast—a day is only 4 hours long—that it has been pulled into the shape of a flattened egg or rugby ball. It is covered in crystalline water ice and has two moons and a ring system.",
     facts: [ "Spins once every 4 hours.", "Shaped like an egg (ellipsoid).", "Has two moons and a ring.", "Named after Hawaiian goddess.", "Covered in crystalline ice." ]
-  },
-  { 
-    id: 'sedna', name: "Sedna", type: "Dwarf Planet", radius: 1.5, distance: 750, speed: 0.0004, color: '#CD5C5C', textureType: 'rocky', 
-    textureUrl: `${REPO_URL}/sedna.jpg`,
-    stats: { temp: '-240°C', orbit: '11,400 Years', gravity: '0.4 m/s²', day: '10 Hours' }, 
-    comp: ['Methane', 'Nitrogen'], 
-    desc: "The distant wanderer.", 
-    narration: "Sedna is a distant dwarf planet in the outer reaches of the Solar System. It has an exceptionally long and elongated orbit, taking over 11,000 years to circle the Sun. Its surface is one of the reddest in the solar system.",
-    facts: [ "Takes 11,400 years to orbit the Sun.", "One of the reddest objects in the system.", "Extremely distant.", "Likely covered in hydrocarbon sludge.", "Named after Inuit sea goddess." ]
   }
 ];
 
@@ -169,7 +157,7 @@ export default function App() {
   const interactablesRef = useRef([]);
   const tourTimerRef = useRef(null);
   const tourIndexRef = useRef(-1);
-  const isTouringRef = useRef(false); // Ref for immediate access in loop
+  const isTouringRef = useRef(false);
   const activeTargetRef = useRef(null);
   
   // Raycaster for interactions
@@ -208,8 +196,6 @@ export default function App() {
   };
 
   const visitNextPlanet = (idx) => {
-      // Access ref directly to avoid closure staleness if possible, but here we use state
-      // We'll rely on the isTouringRef which we sync with state
       if(!isTouringRef.current) return;
       
       if(idx >= SOLAR_DATA.length) { 
@@ -224,7 +210,7 @@ export default function App() {
       if(tourTimerRef.current) clearTimeout(tourTimerRef.current);
       tourTimerRef.current = setTimeout(() => {
           visitNextPlanet(idx + 1);
-      }, 10000); // 10 seconds per planet
+      }, 10000); 
   };
 
   const resetView = () => {
@@ -360,8 +346,10 @@ export default function App() {
     // --- TEXTURES ---
     function generateTexture(type, colorHex, isRoughnessMap = false) {
         const isPlanetMap = ['earth', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'rocky', 'atmosphere', 'galaxy'].includes(type);
+        
         const sizeW = 2048; 
         const sizeH = isPlanetMap ? 1024 : 2048; 
+        
         const canvas = document.createElement('canvas');
         canvas.width = sizeW; canvas.height = sizeH;
         const ctx = canvas.getContext('2d');
@@ -523,86 +511,199 @@ export default function App() {
     
     // Sun Visuals
     const spriteMaterial = new THREE.SpriteMaterial({ 
-        map: generateTexture('glow', '#FFD700'), color: 0xFFD700, transparent: true, blending: THREE.AdditiveBlending, opacity: 0.5, depthWrite: false
+        map: generateTexture('glow', '#FFD700'), 
+        color: 0xFFD700, 
+        transparent: true, 
+        blending: THREE.AdditiveBlending,
+        opacity: 0.5,
+        depthWrite: false
     });
     const sunSprite = new THREE.Sprite(spriteMaterial);
     sunSprite.scale.set(150, 150, 1.0); 
     scene.add(sunSprite);
     
     const coronaMaterial = new THREE.SpriteMaterial({ 
-        map: generateTexture('glow', '#ffaa00'), color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending, opacity: 0.2, depthWrite: false
+        map: generateTexture('glow', '#ffaa00'), 
+        color: 0xffaa00, 
+        transparent: true, 
+        blending: THREE.AdditiveBlending,
+        opacity: 0.2,
+        depthWrite: false
     });
     const coronaSprite = new THREE.Sprite(coronaMaterial);
     coronaSprite.scale.set(300, 300, 1.0); 
     scene.add(coronaSprite);
 
     // Stars
-    const starGeo = new THREE.BufferGeometry();
-    const starPos = new Float32Array(6000 * 3);
-    for(let i=0; i<6000*3; i++) starPos[i] = (Math.random()-0.5) * 5000;
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 1.5, transparent: true, opacity: 0.8})));
+    const createStarField = (count, size, opacity, distance) => {
+        const starGeo = new THREE.BufferGeometry();
+        const starPos = new Float32Array(count * 3);
+        const starColors = new Float32Array(count * 3);
+        const color = new THREE.Color();
+        
+        for(let i=0; i<count*3; i+=3) {
+            const r = distance + Math.random() * distance;
+            const theta = 2 * Math.PI * Math.random();
+            const phi = Math.acos(2 * Math.random() - 1);
+            
+            starPos[i] = r * Math.sin(phi) * Math.cos(theta);
+            starPos[i+1] = r * Math.sin(phi) * Math.sin(theta);
+            starPos[i+2] = r * Math.cos(phi);
+
+            const type = Math.random();
+            if(type > 0.9) color.setHex(0xffaaaa);
+            else if(type > 0.7) color.setHex(0xffddaa); 
+            else if(type > 0.5) color.setHex(0xaaccff);
+            else color.setHex(0xffffff);
+            
+            starColors[i] = color.r;
+            starColors[i+1] = color.g;
+            starColors[i+2] = color.b;
+        }
+        starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+        starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+        const starMat = new THREE.PointsMaterial({
+            vertexColors: true, 
+            size: size, 
+            transparent: true, 
+            opacity: opacity,
+            sizeAttenuation: true
+        });
+        scene.add(new THREE.Points(starGeo, starMat));
+    };
+
+    createStarField(6000, 1.5, 0.9, 1000); 
+    createStarField(9000, 0.8, 0.5, 2000); 
     
     // Background Galaxy
     const bgGeo = new THREE.SphereGeometry(4000, 32, 32);
-    const bgMat = new THREE.MeshBasicMaterial({ map: generateTexture('galaxy', '#000000'), side: THREE.BackSide, transparent: true, opacity: 0.3 });
+    const bgMat = new THREE.MeshBasicMaterial({
+        map: generateTexture('galaxy', '#000000'),
+        side: THREE.BackSide,
+        transparent: true,
+        opacity: 0.3
+    });
     scene.add(new THREE.Mesh(bgGeo, bgMat));
 
     // Debris Belts
     const createDebrisBelt = (count, minRadius, maxRadius) => {
         const geometry = new THREE.DodecahedronGeometry(0.1, 0); 
-        const material = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8, metalness: 0.1, flatShading: true });
+        const material = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 0.8,
+            metalness: 0.1,
+            flatShading: true 
+        });
+
         const mesh = new THREE.InstancedMesh(geometry, material, count);
+        mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+
         const dummy = new THREE.Object3D();
-        const col = new THREE.Color(0xb3b3b3);
+        const color = new THREE.Color();
+
         for (let i = 0; i < count; i++) {
             const angle = Math.random() * Math.PI * 2;
-            const r = Math.sqrt(Math.random() * (maxRadius**2 - minRadius**2) + minRadius**2);
-            dummy.position.set(Math.cos(angle)*r, (Math.random()-0.5)*15*(1-(r-minRadius)/(maxRadius-minRadius)*0.5), Math.sin(angle)*r);
+            const radius = Math.sqrt(Math.random() * (maxRadius**2 - minRadius**2) + minRadius**2);
+            const x = Math.cos(angle) * radius;
+            const y = (Math.random() - 0.5) * 15 * (1 - (radius - minRadius)/(maxRadius - minRadius) * 0.5); 
+            const z = Math.sin(angle) * radius;
+
+            dummy.position.set(x, y, z);
             dummy.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
-            const s = Math.random() * 1.2 + 0.5; dummy.scale.set(s,s,s);
-            dummy.updateMatrix(); mesh.setMatrixAt(i, dummy.matrix); mesh.setColorAt(i, col);
+            const scale = Math.random() * 1.2 + 0.5; 
+            dummy.scale.set(scale, scale, scale);
+            dummy.updateMatrix();
+            mesh.setMatrixAt(i, dummy.matrix);
+
+            color.setHex(0xb3b3b3); 
+            color.offsetHSL(0, 0, (Math.random() - 0.5) * 0.1);
+            mesh.setColorAt(i, color);
         }
+        mesh.instanceMatrix.needsUpdate = true;
+        mesh.instanceColor.needsUpdate = true;
         return mesh;
     };
-    const kuiperBelt = createDebrisBelt(4000, 500, 850); scene.add(kuiperBelt);
-    const asteroidBelt = createDebrisBelt(3000, 170, 210); scene.add(asteroidBelt);
 
-    // Planets Setup
-    const loader = new THREE.TextureLoader();
-    loader.setCrossOrigin('anonymous');
+    const kuiperBelt = createDebrisBelt(4000, 500, 850); 
+    scene.add(kuiperBelt);
 
+    const asteroidBelt = createDebrisBelt(3000, 170, 210);
+    scene.add(asteroidBelt);
+
+
+    // Build Solar System
     SOLAR_DATA.forEach((data, index) => {
         const group = new THREE.Group();
         const subMoons = [];
 
         let tex;
+        // Load Texture if URL exists
         if (data.textureUrl) {
+            const loader = new THREE.TextureLoader();
+            loader.setCrossOrigin('anonymous');
             tex = loader.load(data.textureUrl);
             tex.colorSpace = THREE.SRGBColorSpace;
         } else {
-            tex = generateTexture(data.textureType, data.color);
+            tex = generateTexture(data.textureType, data.color, false);
         }
         
         let mat;
+        // Custom Materials
         if (data.type === 'Star') {
             mat = new THREE.MeshBasicMaterial({ map: tex, color: 0xffffff }); 
+        } else if (data.id === 'earth') {
+             // If using image texture, skip procedural roughness map to avoid mismatch
+             const useProceduralRoughness = !data.textureUrl;
+             const roughTex = useProceduralRoughness ? generateTexture('earth', null, true) : null;
+             
+             mat = new THREE.MeshStandardMaterial({ 
+                map: tex, 
+                roughnessMap: roughTex, // Will be null if using image
+                roughness: data.textureUrl ? 0.6 : 1.0, // Adjust roughness for image
+                metalness: 0.1, 
+                envMapIntensity: 1.0, // Increased reflection
+                emissive: 0x111111,   // Slight emissive glow to prevent total darkness
+                emissiveIntensity: 0.1
+            });
+        } else if (data.type === 'Gas Giant' || data.type === 'Ice Giant') {
+            mat = new THREE.MeshStandardMaterial({ 
+                map: tex, 
+                roughness: 0.5, 
+                metalness: 0.1,
+                emissive: 0x222222, // Gas giants reflect more light
+                emissiveIntensity: 0.15
+            });
+        } else if (data.id === 'venus') {
+             mat = new THREE.MeshStandardMaterial({ 
+                map: tex, 
+                roughness: 0.8, 
+                metalness: 0.1,
+                emissive: 0x221100, // Venus is bright
+                emissiveIntensity: 0.2
+            });
         } else {
-            const matConfig = { map: tex, roughness: 0.9, metalness: 0.1, emissive: 0x111111, emissiveIntensity: 0.1 };
-            if (data.id === 'earth') {
-                 matConfig.roughness = 0.6; matConfig.metalness = 0.1; matConfig.envMapIntensity = 1.0;
-            } else if (data.type === 'Gas Giant' || data.type === 'Ice Giant') {
-                matConfig.roughness = 0.5; matConfig.emissive = 0x222222; matConfig.emissiveIntensity = 0.15;
-            } else if (data.id === 'venus') {
-                 matConfig.emissive = 0x221100; matConfig.emissiveIntensity = 0.2;
-            }
-            mat = new THREE.MeshStandardMaterial(matConfig);
+            // Rocky planets
+            mat = new THREE.MeshStandardMaterial({ 
+                map: tex, 
+                roughness: 0.9, 
+                metalness: 0.1, 
+                emissive: 0x111111, // Standard rocky glow
+                emissiveIntensity: 0.1
+            });
         }
 
         const mesh = new THREE.Mesh(new THREE.SphereGeometry(data.radius, 128, 128), mat);
         mesh.userData = { id: index, type: 'planet' };
-        if (data.tilt) mesh.rotation.z = data.tilt;
-        if (data.scale) mesh.scale.set(data.scale[0], data.scale[1], data.scale[2]);
+        
+        // Tilt for Uranus
+        if (data.tilt) {
+            mesh.rotation.z = data.tilt;
+        }
+        
+        // Scale for Haumea (Ellipsoid)
+        if (data.scale) {
+            mesh.scale.set(data.scale[0], data.scale[1], data.scale[2]);
+        }
 
         group.add(mesh);
         interactablesRef.current.push(mesh);
@@ -610,11 +711,20 @@ export default function App() {
         // Core (Structure Mode)
         if (data.type !== 'Star') {
             const coreGeo = new THREE.SphereGeometry(data.radius * 0.4, 32, 32);
-            let coreColor = (data.type === 'Gas Giant' || data.type === 'Ice Giant') ? 0x888888 : 0xff3300;
-            const coreMat = new THREE.MeshStandardMaterial({ color: coreColor, emissive: coreColor, emissiveIntensity: 0.8 });
+            let coreColor;
+            if (data.type === 'Gas Giant' || data.type === 'Ice Giant') coreColor = 0x888888; // Rock core
+            else coreColor = 0xff3300; // Molten core
+            
+            const coreMat = new THREE.MeshStandardMaterial({ 
+                color: coreColor, 
+                emissive: coreColor, 
+                emissiveIntensity: 0.8,
+                roughness: 0.5 
+            });
             const coreMesh = new THREE.Mesh(coreGeo, coreMat);
             coreMesh.visible = false;
             coreMesh.userData = { isCore: true };
+            // Scale core for Haumea too if needed, but spherical core is usually fine
             if (data.scale) coreMesh.scale.set(data.scale[0], data.scale[1], data.scale[2]);
             group.add(coreMesh);
         }
@@ -623,8 +733,15 @@ export default function App() {
         if (data.moons) {
             data.moons.forEach((m, mIdx) => {
                 const mGeo = new THREE.SphereGeometry(m.radius, 32, 32);
-                let mTex = m.textureUrl ? loader.load(m.textureUrl) : generateTexture('rocky', m.color);
-                if (m.textureUrl) mTex.colorSpace = THREE.SRGBColorSpace;
+                let mTex;
+                if (m.textureUrl) {
+                    const loader = new THREE.TextureLoader();
+                    loader.setCrossOrigin('anonymous');
+                    mTex = loader.load(m.textureUrl);
+                    mTex.colorSpace = THREE.SRGBColorSpace;
+                } else {
+                    mTex = generateTexture(m.type || 'rocky', m.color);
+                }
                 const mMat = new THREE.MeshStandardMaterial({ map: mTex, roughness: 0.9 });
                 const mMesh = new THREE.Mesh(mGeo, mMat);
                 mMesh.userData = { id: index, moonIndex: mIdx, type: 'moon' };
@@ -638,14 +755,29 @@ export default function App() {
             });
         }
 
-        // Rings
+        // Rings (Saturn & Jupiter)
         if (data.rings) {
             const rGeo = new THREE.RingGeometry(data.rings.inner, data.rings.outer, 128);
-            const rTex = generateTexture('ring', data.rings.color); 
-            const rMat = new THREE.MeshStandardMaterial({ map: rTex, color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: data.rings.opacity || 0.8 });
+            const rTex = generateTexture('ring', data.rings.color); // Use the specific ring color
+            const rMat = new THREE.MeshStandardMaterial({ 
+                map: rTex,
+                color: 0xffffff,
+                side: THREE.DoubleSide, 
+                transparent: true, 
+                opacity: data.rings.opacity || 0.8, // Use the specified opacity
+                roughness: 1.0, // Increased roughness for a more blurred look
+                metalness: 0.0
+            });
             const rMesh = new THREE.Mesh(rGeo, rMat);
-            if (data.id === 'uranus') { rMesh.rotation.y = Math.PI / 2; rMesh.rotation.x = 0; } 
-            else { rMesh.rotation.x = Math.PI / 1.8; }
+            
+            // Adjust Ring Orientation
+            if (data.id === 'uranus') {
+                rMesh.rotation.y = Math.PI / 2; 
+                rMesh.rotation.x = 0; 
+            } else {
+                rMesh.rotation.x = Math.PI / 1.8;
+            }
+            
             group.add(rMesh);
         }
 
@@ -655,7 +787,7 @@ export default function App() {
         // Orbit Line
         if (data.distance > 0) {
              const pts = [];
-             for(let i=0; i<=256; i++) { 
+             for(let i=0; i<=256; i++) { // Higher res circle
                  const a = (i/256)*Math.PI*2;
                  pts.push(new THREE.Vector3(Math.cos(a)*data.distance, 0, Math.sin(a)*data.distance));
              }
@@ -664,12 +796,9 @@ export default function App() {
              scene.add(line);
         }
 
-        objectsRef.current.push({ type: 'planet', group, mesh, data: data, moons: subMoons, angle: Math.random()*Math.PI*2 });
+        objectsRef.current.push({ type: 'planet', group, mesh, data, moons: subMoons, angle: Math.random()*Math.PI*2 });
     });
 
-    setLoading(false);
-
-    // --- ANIMATION LOOP ---
     let animationId;
     const animate = () => {
         animationId = requestAnimationFrame(animate);
@@ -679,44 +808,60 @@ export default function App() {
         const isPausedVal = renderer.domElement.dataset.paused === 'true';
         const isStructure = renderer.domElement.dataset.structure === 'true';
 
+        // Animate Belts
         if (!isPausedVal) {
-            kuiperBelt.rotation.y += 0.00015; 
-            asteroidBelt.rotation.y += 0.0005; 
+            kuiperBelt.rotation.y += 0.00015; // Very slow majestic rotation
+            asteroidBelt.rotation.y += 0.0005; // Slightly faster inner rotation
         }
 
         objectsRef.current.forEach(obj => {
             if (!isPausedVal) {
-                if (obj.type === 'planet') {
-                    if (obj.data.tilt) obj.mesh.rotation.x += 0.003; else obj.mesh.rotation.y += 0.001;
-                    if (obj.data.distance > 0) {
-                        obj.angle += obj.data.speed * 0.3;
-                        obj.group.position.x = Math.cos(obj.angle) * obj.data.distance;
-                        obj.group.position.z = Math.sin(obj.angle) * obj.data.distance;
-                    }
-                    if (obj.moons) {
-                        obj.moons.forEach(m => m.orbit.rotation.y += m.speed);
-                    }
+                // Rotate planet on its local axis
+                if (obj.data.tilt) {
+                    obj.mesh.rotation.x += 0.003; 
+                } else {
+                    obj.mesh.rotation.y += 0.001; 
+                }
+
+                if (obj.data.distance > 0) {
+                    obj.angle += obj.data.speed * 0.3 * 0.25;
+                    obj.group.position.x = Math.cos(obj.angle) * obj.data.distance;
+                    obj.group.position.z = Math.sin(obj.angle) * obj.data.distance;
+                }
+                if (obj.moons && obj.moons.length > 0) {
+                    obj.moons.forEach(m => {
+                        if (m.orbit) m.orbit.rotation.y += m.speed * 0.25;
+                    });
                 }
             }
-            if (obj.type === 'planet' && obj.data.type !== 'Star') {
+            
+            // Structure Mode Logic
+            if (obj.data.type !== 'Star') {
                 if (obj.mesh.material) {
                     obj.mesh.material.opacity = isStructure ? 0.15 : 1;
                     obj.mesh.material.transparent = isStructure;
                     obj.mesh.material.wireframe = isStructure;
                 }
                 const core = obj.group.children.find(c => c.userData && c.userData.isCore);
-                if(core) core.visible = isStructure;
+                if(core) {
+                    core.visible = isStructure;
+                    if(isStructure) core.rotation.y += 0.01; 
+                }
             }
         });
 
+        // Follow Logic - Executed AFTER planetary updates to get latest position
         if (activeTargetRef.current && !isPausedVal) {
              const target = activeTargetRef.current;
              const newPos = new THREE.Vector3();
              target.mesh.getWorldPosition(newPos);
+             
+             // Move camera and control target by the delta the planet moved
              if (!newPos.equals(target.lastPos)) {
                  const delta = new THREE.Vector3().subVectors(newPos, target.lastPos);
                  camera.position.add(delta);
                  if(controlsRef.current) controlsRef.current.target.add(delta);
+                 
                  target.lastPos.copy(newPos);
              }
         }
@@ -725,7 +870,8 @@ export default function App() {
     };
     animate();
     
-    // Handle Window Resize
+    setTimeout(() => setLoading(false), 1000);
+
     const handleResize = () => {
         if (!cameraRef.current || !rendererRef.current) return;
         cameraRef.current.aspect = window.innerWidth / window.innerHeight;
@@ -734,6 +880,7 @@ export default function App() {
     };
     window.addEventListener('resize', handleResize);
 
+    // Double Tap/Click to Focus logic
     const handleCanvasClick = (event) => {
         mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -774,8 +921,13 @@ export default function App() {
       }
   }, [isTouring]);
 
+  /* * DUPLICATE FUNCTIONS REMOVED HERE 
+   * (focusPlanet, visitNextPlanet, resetView, startTour were already defined at the top)
+   */
+
   return (
     <div className="w-full h-screen bg-black relative text-slate-100 font-sans overflow-hidden">
+      {/* 3D Canvas Mount Point */}
       <div ref={mountRef} className="absolute inset-0 z-0 bg-black" style={{ pointerEvents: 'auto' }} />
       
       {/* Header */}
