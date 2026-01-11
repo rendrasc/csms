@@ -12,7 +12,7 @@ const REPO_URL = "https://raw.githubusercontent.com/rendrasc/solar-system-3D/mai
 const SOLAR_DATA = [
   { 
     id: 'sun', name: "Sun", type: "Star", radius: 35, distance: 0, speed: 0, color: '#FFD700', textureType: 'star', 
-    textureUrl: `${REPO_URL}/sun.jpg`,
+    textureUrl: `${REPO_URL}/Sun.jpg`,
     stats: { temp: '5,500°C', orbit: 'N/A', gravity: '274 m/s²', day: '25 Days' }, 
     comp: ['Hydrogen', 'Helium'], 
     desc: "The star at the center of our Solar System.", 
