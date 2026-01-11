@@ -133,6 +133,9 @@ export default function App() {
     const [isPaused, setIsPaused] = useState(false);
     const [isNavOpen, setIsNavOpen] = useState(true);
     const [isMuted, setIsMuted] = useState(false);
+    
+    // --- FIX: Added structureMode state here ---
+    const [structureMode, setStructureMode] = useState(false);
     const [loading, setLoading] = useState(true);
     
     const [isIdle, setIsIdle] = useState(false);
@@ -144,6 +147,7 @@ export default function App() {
     const rendererRef = useRef(null);
     const controlsRef = useRef(null);
     const objectsRef = useRef([]);
+    const interactablesRef = useRef([]); // Added missing ref initialization
     const activeTargetRef = useRef(null);
 
     // --- AUDIO & IDLE ---
@@ -187,6 +191,15 @@ export default function App() {
         else if (isIdle) playSafe(AUDIO_IDLE_URL);
         else audio.pause();
     }, [isIdle, isTouring, isMuted]);
+
+    // --- WIREFRAME EFFECT (FIXED) ---
+    useEffect(() => {
+        objectsRef.current.forEach(obj => {
+            if (obj.mesh && obj.mesh.material) {
+                obj.mesh.material.wireframe = structureMode;
+            }
+        });
+    }, [structureMode]);
 
     // --- 3D SCENE ---
     useEffect(() => {
